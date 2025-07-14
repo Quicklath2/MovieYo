@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieYo - Watch Movies & TV Shows Online</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="cc-vignette"></div>
+    <nav class="navbar-centered">
+        <div class="nav-logo">MovieYo</div>
+    </nav>
+    <main class="main-centered true-center">
+        <form class="search-bar-centered glowing-search" role="search" aria-label="Search movies and TV shows" autocomplete="off">
+            <label for="search-input" class="visually-hidden">Search for movies and TV shows</label>
+            <input 
+                type="text" 
+                id="search-input"
+                class="search-input-centered"
+                placeholder="Search for movies, TV shows, genres..."
+                aria-label="Search movies and TV shows"
+                autocomplete="off"
+            >
+            <button type="submit" class="search-btn-centered" aria-label="Search">
+                <svg class="search-icon-centered" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </form>
+    </main>
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <section class="footer-section">
+                <h2 class="footer-title">Legal Disclaimer</h2>
+                <div class="footer-disclaimer">
+                    MovieYo does not host any video content on its servers. All content is provided by non-affiliated third parties. We act as a search engine linking to publicly available content. MovieYo is not responsible for third-party content. Please direct any legal concerns to the appropriate content hosting sites.
+                </div>
+            </section>
+            <section class="footer-section">
+                <h2 class="footer-title">About Our Platform</h2>
+                <div class="footer-description">
+                    <p>Access our extensive library of 20,000+ carefully curated movies and TV shows spanning every genre imaginable. From blockbuster hits and award-winning films to indie gems and classic masterpieces, we bring you the best in entertainment.</p>
+                    <br>
+                    <p>Experience premium streaming features including:</p>
+                    <ul class="trust-signals" role="list">
+                        <li class="trust-signal-item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>HD Quality Streaming</span>
+                        </li>
+                        <li class="trust-signal-item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Daily Content Updates</span>
+                        </li>
+                        <li class="trust-signal-item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>No Registration Required</span>
+                        </li>
+                        <li class="trust-signal-item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span>Seamless Streaming</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section class="footer-section">
+                <h2 class="footer-title">Streaming Quality</h2>
+                <div class="footer-description">
+                    <p>Enjoy seamless streaming with our optimized platform featuring adaptive quality selection, fast loading times, and buffer-free playback. Watch your favorite content in up to 1080p HD quality with crystal clear audio.</p>
+                    <div class="seo-keywords" role="complementary">
+                        Popular Categories: Action Movies, Drama Series, Comedy Shows, Thriller Movies, Horror Films, Romance, Documentaries, Anime, Kids Content, Hollywood Blockbusters, Independent Films, Classic Movies, Latest Releases, Popular TV Series
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+    <script>
+        function extractImdbId(url) {
+            const match = url.match(/imdb\.com\/title\/(tt\d+)/i);
+            return match ? match[1] : null;
+        }
+        async function resolveImdbToPlayer(imdbId) {
+            // Call backend to resolve IMDb ID to TMDB ID and media type
+            const res = await fetch(`/api/imdb_lookup?id=${imdbId}`);
+            if (!res.ok) return null;
+            const data = await res.json();
+            if (data && data.tmdb_id && data.media_type) {
+                window.location.href = `/player/${data.media_type}/${data.tmdb_id}`;
+                return true;
+            }
+            return false;
+        }
+        document.querySelector('.search-bar-centered').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            const imdbId = extractImdbId(query);
+            if (imdbId) {
+                await resolveImdbToPlayer(imdbId);
+                return;
+            }
+            if (query) {
+                window.location.href = `/static/Search_Page/search_result.html?q=${encodeURIComponent(query)}`;
+            }
+        });
+    </script>
+</body>
+</html> 

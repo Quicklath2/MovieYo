@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - MovieYo</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="searchUI.css">
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="cc-vignette"></div>
+    <style>
+.nav-logo {
+    text-decoration: none;
+    color: #e50914;
+    font-size: 1.7rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 12px #000a;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+.nav-logo:hover, .nav-logo:focus {
+    color: #fff;
+    text-shadow: 0 0 16px #e50914cc, 0 2px 12px #000a;
+}
+</style>
+<nav class="navbar-centered">
+    <a href="/" class="nav-logo">MovieYo</a>
+</nav>
+    <main class="search-results-main true-center">
+        <form class="search-bar-centered glowing-search" role="search" aria-label="Search movies and TV shows" autocomplete="off" style="margin-bottom: 36px;">
+            <label for="search-input-main" class="visually-hidden">Search for movies and TV shows</label>
+            <input 
+                type="text" 
+                id="search-input-main"
+                class="search-input-centered"
+                placeholder="Search titles, genres, people..."
+                aria-label="Search movies and TV shows"
+            >
+            <button type="submit" class="search-btn-centered" aria-label="Search">
+                <svg class="search-icon-centered" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </form>
+        <div id="search-results-main-panel" class="search-results-panel"></div>
+    </main>
+    <script type="module">
+        import { searchMovies } from './search.js';
+        function extractImdbId(url) {
+            const match = url.match(/imdb\.com\/title\/(tt\d+)/i);
+            return match ? match[1] : null;
+        }
+        async function resolveImdbToPlayer(imdbId) {
+            // Call backend to resolve IMDb ID to TMDB ID and media type
+            const res = await fetch(`/api/imdb_lookup?id=${imdbId}`);
+            if (!res.ok) return null;
+            const data = await res.json();
+            if (data && data.tmdb_id && data.media_type) {
+                window.location.href = `/player/${data.media_type}/${data.tmdb_id}`;
+                return true;
+            }
+            return false;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const q = urlParams.get('q') || '';
+            const input = document.getElementById('search-input-main');
+            const resultsPanel = document.getElementById('search-results-main-panel');
+            if (!input || !resultsPanel) {
+                console.error('Required elements not found');
+                return;
+            }
+            input.value = q;
+            async function doSearch(query) {
+                if (!resultsPanel) return;
+                resultsPanel.innerHTML = '<div class="search-loading">Searching...</div>';
+                const results = await searchMovies(query);
+                if (results.length === 0) {
+                    resultsPanel.innerHTML = '<div class="search-no-results">No results found.</div>';
+                    return;
+                }
+                resultsPanel.innerHTML = results.map(item => `
+                    <article class="search-result-card" data-id="${item.id}" data-media-type="${item.media_type}">
+                        <div class="search-result-img-wrapper">
+                            <img src="${item.image}" alt="${item.title}" class="search-result-img" />
+                            <a class="play-btn-overlay" href="/player/${item.media_type}/${item.id}" tabindex="0" aria-label="Play ${item.title}">
+                                <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="19" cy="19" r="19" fill="#e50914" fill-opacity="0.92"/>
+                                    <polygon points="15,12 28,19 15,26" fill="#fff"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="search-result-info">
+                            <a class="search-result-title-link" href="/player/${item.media_type}/${item.id}" tabindex="0">
+                                ${item.title} ${item.year ? `(${item.year})` : ''}
+                            </a>
+                            <div class="search-result-meta">
+                                <span class="search-result-type">${item.media_type === 'movie' ? 'Movie' : 'TV Series'}</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+                // Add click handler for the entire card
+                const cards = resultsPanel.querySelectorAll('.search-result-card');
+                cards.forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('a, button')) return;
+                        const id = card.dataset.id;
+                        const mediaType = card.dataset.mediaType;
+                        window.location.href = `/player/${mediaType}/${id}`;
+                    });
+                });
+            }
+            doSearch(q);
+            input.addEventListener('input', () => {
+                doSearch(input.value.trim());
+            });
+            document.querySelector('.search-bar-centered')?.addEventListener('submit', async e => {
+                e.preventDefault();
+                const query = input.value.trim();
+                const imdbId = extractImdbId(query);
+                if (imdbId) {
+                    await resolveImdbToPlayer(imdbId);
+                    return;
+                }
+                doSearch(query);
+            });
+        });
+    </script>
+</body>
+</html>

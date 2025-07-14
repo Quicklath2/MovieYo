@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ads Testing Page</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --primary-color: #8a2be2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #8a2be2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .ad-section {
+            margin: 2rem 0;
+        }
+
+        .ad-section h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .banner-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .ad-placeholder {
+            width: 728px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem auto;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .glass-card {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .ad-placeholder {
+                width: 100%;
+                max-width: 728px;
+            }
+        }
+
+        #container-3a67529cdf405ece1e269ad5f2109adf {
+            max-width: 100%;
+            overflow: hidden;
+            margin: 1rem 0;
+            min-height: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .banner-ad {
+            max-width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .ad-error {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header glass-card">
+            <h1>Ad Testing Page</h1>
+            <p>This page contains various ad formats for testing purposes</p>
+        </header>
+
+        <!-- Top Banner Ad -->
+        <section class="ad-section glass-card">
+            <h2>Top Banner (728x90)</h2>
+            <div class="banner-ad">
+                <div class="ad-placeholder" id="top-banner">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '50c49c67c420f22da6930bc18d5fcf7c',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                        document.write('<scr' + 'ipt type="text/javascript" src="//referredrender.com/50c49c67c420f22da6930bc18d5fcf7c/invoke.js"></scr' + 'ipt>');
+                    </script>
+                    <noscript>Ad Space (JavaScript required)</noscript>
+                </div>
+            </div>
+        </section>
+
+        <!-- Native Banner -->
+        <section class="ad-section glass-card">
+            <h2>Native Banner</h2>
+            <div id="container-3a67529cdf405ece1e269ad5f2109adf"></div>
+            <script async="async" data-cfasync="false" src="//referredrender.com/3a67529cdf405ece1e269ad5f2109adf/invoke.js"></script>
+        </section>
+
+        <!-- Social Bar -->
+        <section class="ad-section glass-card">
+            <h2>Social Bar</h2>
+            <div id="social-bar-container">
+                <script type='text/javascript' src='//referredrender.com/fe/e9/38/fee93838c4565d46c3f0a05ca4ad8e9e.js'></script>
+            </div>
+        </section>
+
+        <!-- Bottom Banner Ad -->
+        <section class="ad-section glass-card">
+            <h2>Bottom Banner (728x90)</h2>
+            <div class="banner-ad">
+                <div class="ad-placeholder" id="bottom-banner">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '50c49c67c420f22da6930bc18d5fcf7c',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                        document.write('<scr' + 'ipt type="text/javascript" src="//referredrender.com/50c49c67c420f22da6930bc18d5fcf7c/invoke.js"></scr' + 'ipt>');
+                    </script>
+                    <noscript>Ad Space (JavaScript required)</noscript>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Popunder Ad -->
+    <script type='text/javascript' src='//referredrender.com/ad/b7/cd/adb7cd743df786a385070f466a46ba8c.js'></script>
+
+    <!-- Error handling script -->
+    <script>
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName === 'SCRIPT') {
+                const container = e.target.parentElement;
+                if (container && container.classList.contains('ad-placeholder')) {
+                    if (!container.querySelector('.ad-error')) {
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'ad-error';
+                        errorMsg.textContent = 'Ad failed to load. Please disable ad blocker if enabled.';
+                        container.appendChild(errorMsg);
+                    }
+                }
+            }
+        }, true);
+    </script>
+</body>
+</html> 
